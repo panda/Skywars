@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public class PlayerManager {
     private static final ArrayList<GamePlayer> gamePlayers = new ArrayList<>();
-    static {}
     public static void addPlayer(GamePlayer player) {
         gamePlayers.add(player);
     }

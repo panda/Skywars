@@ -2,6 +2,7 @@ package net.thelightmc.listeners;
 
 import net.thelightmc.Language;
 import net.thelightmc.core.player.GamePlayer;
+import net.thelightmc.manager.GameManager;
 import net.thelightmc.manager.PlayerManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,7 +27,7 @@ public class GameListener implements Listener {
             killer.incrementStatistic(GamePlayer.Statstics.Kills);
             killed.getGame().broadcast(Language.PlayerKilled.getMsg().replace("{Player}",event.getEntity().getName()).replace("{Killer}",killer.getName()));
         } else {
-            killed.getGame().broadcast(Language.PlayerDied.getMsg().replace("{PLayer}",event.getEntity().getName()));
+            killed.getGame().broadcast(Language.PlayerDied.getMsg().replace("{Player}",event.getEntity().getName()));
         }
     }
     @EventHandler
@@ -36,6 +37,7 @@ public class GameListener implements Listener {
         if (!block.getType().equals(material)) {
             return;
         }
-
+        GamePlayer player = PlayerManager.getPlayer(event.getPlayer());
+        GameManager.getInstance().getAvailable().addPlayer(player);
     }
 }

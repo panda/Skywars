@@ -1,30 +1,28 @@
 package net.thelightmc.core.build;
 
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.extent.clipboard.io.SchematicReader;
-import org.bukkit.Location;
-
-import java.util.ArrayList;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 public class MapCreator {
-    protected MapCreator() {}
-    private Location origin;
-    private ArrayList<Map.Spawn> locations = new ArrayList<>();
-    public static Map fromSchem(CuboidClipboard cc) {
-        //Todo: This method to get from schem
-        return null;
+    private final String worldName;
+    private World skyWorld;
+    public MapCreator(String worldName) {
+        this.worldName = worldName;
+        plugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
     }
-    public void addSpawn(Map.Spawn spawn) {
-        locations.add(spawn);
+    private final WorldEditPlugin plugin;
+    private void createWorld() {
+        skyWorld = Bukkit.createWorld(new WorldCreator(worldName).environment(World.Environment.THE_END));
     }
-    public void setOrigin(Location location) {
-        origin = location;
+    private void deleteWorld() {
+
     }
-    public Map create() {
-        Map map = new Map(origin);
-        for (Map.Spawn spawn : locations) {
-            map.addSpawn(spawn);
-        }
-        return map;
+    public void create() {
+        EditSession session = plugin.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(skyWorld), 1000000);
+
     }
 }

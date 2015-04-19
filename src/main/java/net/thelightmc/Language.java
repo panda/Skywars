@@ -7,6 +7,7 @@ public enum  Language {
     DeathmatchCountdown("DeathmatchCountdown","&5Deathmatch commencing in &6%s"),
     DeathmatchStarting("DeathmatchStarting","&6The deathmatch is now starting."),
     PlayerDied("PlayerDied","&6{Player} &9has been removed from the game,"),
+    PlayerJoinedGame("PlayerJoinedGame","&6{Player} &9has entered the game. &8(&6{REMAINING}&8)"),
     PlayerKilled("PlayerKilled","&6{Player} &9has been killed by &6{Killer}");
     private final String path;
     private final String msg;

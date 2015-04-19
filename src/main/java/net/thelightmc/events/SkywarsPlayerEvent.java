@@ -1,13 +1,14 @@
 package net.thelightmc.events;
 
 import net.thelightmc.core.game.Game;
+import net.thelightmc.core.player.GamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 public abstract class SkywarsPlayerEvent extends SkywarsEvent {
 
-    private final Player player;
+    private final GamePlayer player;
 
-    public SkywarsPlayerEvent(Game game,Player who) {
+    public SkywarsPlayerEvent(Game game,GamePlayer who) {
         super(game);
         this.player = who;
     }
@@ -17,7 +18,7 @@ public abstract class SkywarsPlayerEvent extends SkywarsEvent {
         return null;
     }
 
-    public Player getPlayer() {
+    public GamePlayer getPlayer() {
         return player;
     }
 }

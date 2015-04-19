@@ -1,11 +1,12 @@
 package net.thelightmc.core.game;
 
 import net.thelightmc.Language;
-import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.core.build.Map;
+import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.core.scoreboard.GameScoreboard;
 import net.thelightmc.events.DeathmatchStartEvent;
 import net.thelightmc.events.GameBroadcastEvent;
+import net.thelightmc.events.GameJoinEvent;
 import net.thelightmc.events.GameStateChangeEvent;
 import org.bukkit.Bukkit;
 
@@ -34,12 +35,21 @@ public class Game {
             gamePlayer.getPlayer().sendMessage(event.getMessage());
         }
     }
+    public void startGame() {
+
+    }
+    public boolean checkStart() {
+        return map.getMinimumPlayers() <= getPlayerSize() && map.getMaximumPlayers() == getPlayerSize();
+    }
 
     public void removePlayer(GamePlayer gamePlayer) {
         gamePlayers.remove(gamePlayer);
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
+        GameJoinEvent event = new GameJoinEvent(this,gamePlayer.getPlayer());
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {return;}
         gamePlayers.add(gamePlayer);
         Map.Spawn spawn = getMap().getAvailableSpawn();
         spawn.setUsed(true);

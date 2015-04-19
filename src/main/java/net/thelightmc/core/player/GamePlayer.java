@@ -1,5 +1,6 @@
 package net.thelightmc.core.player;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.thelightmc.core.game.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ public class GamePlayer {
     //Wrapper for Players
     public GamePlayer(Player player) {
         this.player = player.getUniqueId();
+
     }
 
     public Player getPlayer() {
@@ -27,14 +29,12 @@ public class GamePlayer {
     public Game getGame() {
         return game;
     }
-    public boolean load() {
-        return true;
-    }
     public void setGame(Game game) {
         this.game = game;
     }
 
     public void incrementStatistic(Statstics statistics) {
+
     }
 
     public void leaveGame() {
@@ -46,6 +46,7 @@ public class GamePlayer {
         private int value;
         Statstics() {
             this.value = 0;
+
         }
         protected void setValue(int value) {
             this.value = value;

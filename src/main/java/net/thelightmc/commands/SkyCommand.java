@@ -3,6 +3,7 @@ package net.thelightmc.commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public abstract class SkyCommand {
     protected abstract Permission defaultPermission();
     public String description;
     public String usage;
-    private List<String> aliases;
+    private List<String> aliases = new ArrayList<>();
 
     public List<String> getAliases() {
         return aliases;

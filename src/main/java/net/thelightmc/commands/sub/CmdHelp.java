@@ -4,6 +4,7 @@ import net.thelightmc.commands.SkyCommand;
 import org.bukkit.command.CommandSender;
 
 public class CmdHelp extends SkyCommand {
+
     public CmdHelp() {
         this.description = "Main help command with the tutorial";
         this.usage = "/sw help";
