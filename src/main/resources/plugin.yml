@@ -1,0 +1,6 @@
+name: ${project.name}
+version: ${project.version}
+main: net.thelightmc.Skywars
+depend: [WorldEdit]
+commands:
+   skywars:

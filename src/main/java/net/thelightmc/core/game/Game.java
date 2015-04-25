@@ -6,7 +6,7 @@ import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.core.scoreboard.GameScoreboard;
 import net.thelightmc.events.DeathmatchStartEvent;
 import net.thelightmc.events.GameBroadcastEvent;
-import net.thelightmc.events.GameJoinEvent;
+//import net.thelightmc.events.GameJoinEvent;
 import net.thelightmc.events.GameStateChangeEvent;
 import org.bukkit.Bukkit;
 
@@ -28,15 +28,19 @@ public class Game {
     }
 
     public void broadcast(String msg) {
-        GameBroadcastEvent event = new GameBroadcastEvent(msg,gamePlayers,this);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) { return; }
-        for (GamePlayer gamePlayer : event.getGamePlayers()) {
-            gamePlayer.getPlayer().sendMessage(event.getMessage());
+        for (GamePlayer gamePlayer : gamePlayers) {
+            gamePlayer.getPlayer().sendMessage(msg);
         }
     }
     public void startGame() {
-
+        //ToDo remove boxes
+        broadcast(Language.GameStart);
+    }
+    public void endGame() {
+        broadcast(Language.GameEnd);
+    }
+    private boolean checkEnd() {
+        return gamePlayers.isEmpty() || gamePlayers.size() <2;
     }
     public boolean checkStart() {
         return map.getMinimumPlayers() <= getPlayerSize() && map.getMaximumPlayers() == getPlayerSize();
@@ -47,15 +51,21 @@ public class Game {
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
-        GameJoinEvent event = new GameJoinEvent(this,gamePlayer.getPlayer());
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) {return;}
+        //GameJoinEvent event = new GameJoinEvent(this,gamePlayer.getPlayer());
+        //Bukkit.getPluginManager().callEvent(event);
+        //if (event.isCancelled()) {return;}
         gamePlayers.add(gamePlayer);
         Map.Spawn spawn = getMap().getAvailableSpawn();
+        if (spawn == null) {
+            Bukkit.broadcastMessage("Null");
+            return;
+        }
         spawn.setUsed(true);
         gamePlayer.getPlayer().teleport(spawn.getLocation());
         gamePlayer.setGame(this);
-
+        broadcast("joining");
+        //broadcast(Language.PlayerJoinedGame.toString().replace("{Player}",gamePlayer.getName()));
+        //checkStart();
     }
 
     public Map getMap() {
@@ -67,10 +77,10 @@ public class Game {
     }
 
     public void setGameState(GameState gameState) {
-        GameStateChangeEvent event = new GameStateChangeEvent(this.gameState,gameState,this);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) {return;}
-        this.gameState = event.getTo();
+        //GameStateChangeEvent event = new GameStateChangeEvent(this.gameState,gameState,this);
+        //Bukkit.getPluginManager().callEvent(event);
+        //if (event.isCancelled()) {return;}
+        this.gameState = gameState;
     }
 
     public int getPlayerSize() {

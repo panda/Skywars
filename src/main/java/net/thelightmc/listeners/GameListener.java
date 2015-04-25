@@ -1,16 +1,17 @@
 package net.thelightmc.listeners;
 
 import net.thelightmc.Language;
+import net.thelightmc.Skywars;
 import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.manager.GameManager;
 import net.thelightmc.manager.PlayerManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class GameListener implements Listener {
     @EventHandler
@@ -31,13 +32,21 @@ public class GameListener implements Listener {
         }
     }
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-        Material material = Material.valueOf("STONE_PLATE");
-        if (!block.getType().equals(material)) {
+    public void onPlayerMove(PlayerInteractEvent event) {
+        Material material = Material.STONE_PLATE;
+        if (!event.getClickedBlock().getType().equals(material)) {
             return;
         }
-        GamePlayer player = PlayerManager.getPlayer(event.getPlayer());
-        GameManager.getInstance().getAvailable().addPlayer(player);
+        final GamePlayer player = PlayerManager.getPlayer(event.getPlayer());
+        if (player.getGame() != null) {
+            return;
+        }
+        player.getPlayer().sendMessage(ChatColor.RED + "Test");
+        Bukkit.getScheduler().runTask(Skywars.getProvidingPlugin(Skywars.class), new Runnable() {
+            @Override
+            public void run() {
+                GameManager.getInstance().getAvailable().addPlayer(player);
+            }
+        });
     }
 }

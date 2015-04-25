@@ -12,7 +12,7 @@ public class CmdHelp extends SkyCommand {
 
     @Override
     protected void execute(CommandSender sender, String[] args) {
-
+        sender.sendMessage("Hi");
     }
 
     @Override
