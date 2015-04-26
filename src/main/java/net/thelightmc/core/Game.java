@@ -1,7 +1,8 @@
-package net.thelightmc.core.game;
+package net.thelightmc.core;
 
 import net.thelightmc.Language;
 import net.thelightmc.core.build.Map;
+import net.thelightmc.core.game.GameState;
 import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.core.scoreboard.GameScoreboard;
 import net.thelightmc.events.DeathmatchStartEvent;

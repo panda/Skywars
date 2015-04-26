@@ -1,6 +1,7 @@
 package net.thelightmc.manager;
 
 import net.thelightmc.core.player.GamePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -33,5 +34,9 @@ public class PlayerManager {
     }
     public static GamePlayer getPlayer(Player player) {
         return getPlayer(player.getUniqueId());
+    }
+
+    public static GamePlayer getPlayer(CommandSender sender) {
+        return getPlayer((Player)sender);
     }
 }

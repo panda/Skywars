@@ -1,7 +1,7 @@
 package net.thelightmc.timer;
 
 import net.thelightmc.Language;
-import net.thelightmc.core.game.Game;
+import net.thelightmc.core.Game;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DeathmatchTimer extends BukkitRunnable {

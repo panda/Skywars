@@ -1,6 +1,6 @@
 package net.thelightmc.events;
 
-import net.thelightmc.core.game.Game;
+import net.thelightmc.core.Game;
 import net.thelightmc.core.game.GameState;
 
 public class GameStateChangeEvent extends SkywarsEvent {

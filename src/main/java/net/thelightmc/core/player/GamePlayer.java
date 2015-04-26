@@ -1,7 +1,6 @@
 package net.thelightmc.core.player;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.thelightmc.core.game.Game;
+import net.thelightmc.core.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

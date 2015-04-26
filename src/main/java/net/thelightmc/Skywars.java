@@ -2,6 +2,8 @@ package net.thelightmc;
 
 import net.thelightmc.commands.CommandHandler;
 import net.thelightmc.commands.sub.CmdHelp;
+import net.thelightmc.commands.sub.CmdJoin;
+import net.thelightmc.core.build.MapCreator;
 import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.listeners.GameListener;
 import net.thelightmc.listeners.PlayerListener;
@@ -21,6 +23,12 @@ public class Skywars extends JavaPlugin {
             PlayerManager.addPlayer(gamePlayer);
         }
     }
+
+    @Override
+    public void onDisable() {
+        MapCreator.get().deleteWorld();
+    }
+
     private void registerEvents(Listener... listeners) {
         for (Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener,this);
@@ -28,6 +36,7 @@ public class Skywars extends JavaPlugin {
     }
     private void registerCommands() {
         CommandHandler.addCommand(new CmdHelp());
+        CommandHandler.addCommand(new CmdJoin());
     }
     private void initialize() {
         registerCommands();

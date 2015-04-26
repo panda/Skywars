@@ -1,9 +1,9 @@
 package net.thelightmc.events;
 
-import net.thelightmc.core.game.Game;
+import net.thelightmc.core.Game;
 import net.thelightmc.core.player.GamePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+
 public abstract class SkywarsPlayerEvent extends SkywarsEvent {
 
     private final GamePlayer player;

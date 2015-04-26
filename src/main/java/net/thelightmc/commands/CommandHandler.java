@@ -26,7 +26,7 @@ public class CommandHandler implements CommandExecutor {
                     if (!sCommand.allowConsoleSender() && commandSender instanceof ConsoleCommandSender) {
                         return false;
                     }
-                    if (!sCommand.defaultPermission().hasPermission(commandSender,sCommand.getPermission())) {
+                    if (!sCommand.hasPermission(commandSender,sCommand.getPermission())) {
                         commandSender.sendMessage(Language.NoPermission.getMsg());
                         return false;
                     }

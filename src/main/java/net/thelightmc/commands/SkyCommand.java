@@ -12,7 +12,6 @@ public abstract class SkyCommand {
     protected abstract String getCommand();
     protected abstract String getPermission();
     protected abstract boolean allowConsoleSender();
-    protected abstract Permission defaultPermission();
     public String description;
     public String usage;
     private List<String> aliases = new ArrayList<>();
@@ -24,22 +23,8 @@ public abstract class SkyCommand {
     public void addAlias(String alias) {
         this.aliases.add(alias.toLowerCase().trim());
     }
-    protected enum Permission {
-        OP,Default,Console;
-        public boolean hasPermission(CommandSender commandSender,String permNode) {
-            if (permNode!=null && commandSender.hasPermission((permNode))) {
-                return true;
-            }
-            switch (this){
-                case Console:
-                    return commandSender instanceof ConsoleCommandSender;
-                case OP:
-                    return commandSender.isOp();
-                case Default:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+
+    public boolean hasPermission(CommandSender commandSender, String permission) {
+        return commandSender.hasPermission(permission);
     }
 }

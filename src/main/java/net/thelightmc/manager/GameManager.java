@@ -2,7 +2,7 @@ package net.thelightmc.manager;
 
 import net.thelightmc.core.build.Map;
 import net.thelightmc.core.build.MapCreator;
-import net.thelightmc.core.game.Game;
+import net.thelightmc.core.Game;
 import net.thelightmc.core.game.GameState;
 import net.thelightmc.core.player.GamePlayer;
 import org.bukkit.entity.Player;
@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class GameManager {
     private static GameManager instance;
     private Game game;
-    private MapCreator creator = new MapCreator("skyworld");
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
@@ -49,6 +48,6 @@ public class GameManager {
         games.add(game);
     }
     private Map getMap() {
-        return creator.create();
+        return MapCreator.get().create();
     }
 }
