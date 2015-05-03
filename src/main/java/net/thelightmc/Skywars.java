@@ -17,7 +17,6 @@ public class Skywars extends JavaPlugin {
     @Override
     public void onEnable() {
         getCommand("skywars").setExecutor(new CommandHandler());
-
         initialize();
         for (Player player : Bukkit.getOnlinePlayers()) {
             GamePlayer gamePlayer = new GamePlayer(player);
@@ -39,6 +38,7 @@ public class Skywars extends JavaPlugin {
         CommandHandler.addCommand(new CmdHelp());
         CommandHandler.addCommand(new CmdJoin());
         CommandHandler.addCommand(new CmdScore());
+        CommandHandler.addCommand(new CmdIncrement());
         CommandHandler.addCommand(new CmdSpectate());
     }
     private void initialize() {

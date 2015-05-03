@@ -1,6 +1,7 @@
 package net.thelightmc.core;
 
 import net.thelightmc.Language;
+import net.thelightmc.Skywars;
 import net.thelightmc.core.build.Map;
 import net.thelightmc.core.game.GameState;
 import net.thelightmc.core.player.GamePlayer;
@@ -9,6 +10,7 @@ import net.thelightmc.core.scoreboard.ScoreboardUpdate;
 import net.thelightmc.events.DeathmatchStartEvent;
 //import net.thelightmc.events.GameJoinEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,7 @@ public class Game {
     private final Map map;
     private GameState gameState;
     private final GameScoreboard scoreboard;
+    private boolean fallDamage = true;
 
     public void broadcast(Language language) {
         broadcast(language.toString());
@@ -35,9 +38,16 @@ public class Game {
     }
     public void startGame() {
         //ToDo remove boxes
+        setFallDamage(false);
         broadcast(Language.GameStart);
         setGameState(GameState.InGame);
         scoreboard.update(ScoreboardUpdate.StartGame);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(JavaPlugin.getProvidingPlugin(Skywars.class), new Runnable() {
+            @Override
+            public void run() {
+                setFallDamage(true);
+            }
+        },60);
     }
     public void endGame() {
         broadcast(Language.GameEnd);
@@ -68,7 +78,7 @@ public class Game {
         gamePlayers.add(gamePlayer);
         Map.Spawn spawn = getMap().getAvailableSpawn();
         if (spawn == null) {
-            Bukkit.broadcastMessage("Null");
+            Bukkit.getLogger().severe("Spawn is null. Please report this error.");
             return;
         }
         spawn.setUsed(true);
@@ -117,5 +127,13 @@ public class Game {
     }
     public void updateScoreboard(ScoreboardUpdate scoreboardUpdate) {
         scoreboard.update(scoreboardUpdate);
+    }
+
+    public boolean isFallDamage() {
+        return fallDamage;
+    }
+
+    public void setFallDamage(boolean fallDamage) {
+        this.fallDamage = fallDamage;
     }
 }

@@ -8,9 +8,12 @@ import net.thelightmc.manager.GameManager;
 import net.thelightmc.manager.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -35,6 +38,19 @@ public class GameListener implements Listener {
             killed.getGame().broadcast(Language.PlayerKilled.getMsg().replace("{Player}",event.getEntity().getName()).replace("{Killer}",killer.getName()));
         } else {
             killed.getGame().broadcast(Language.PlayerDied.getMsg().replace("{Player}",event.getEntity().getName()));
+        }
+    }
+    @EventHandler
+    public void onPlayerFall(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL) {
+            return;
+        }
+        GamePlayer gamePlayer = PlayerManager.getPlayer(event.getEntity());
+        if (gamePlayer.getGame() != null && !gamePlayer.getGame().isFallDamage()) {
+            event.setCancelled(true);
         }
     }
     @EventHandler

@@ -11,11 +11,14 @@ public class CmdScore extends SkyCommand {
     @Override
     protected void execute(CommandSender sender, String[] args) {
         GamePlayer gamePlayer = PlayerManager.getPlayer(sender);
-        sender.sendMessage(ChatColor.DARK_AQUA + "Score: " + gamePlayer.getStat(Stats.Score));
-        sender.sendMessage(ChatColor.DARK_AQUA + "Games: " + gamePlayer.getStat(Stats.Matches));
-        sender.sendMessage(ChatColor.DARK_AQUA + "Wins: "+ gamePlayer.getStat(Stats.Wins));
-        sender.sendMessage(ChatColor.DARK_AQUA + "Kills: "+ gamePlayer.getStat(Stats.Kills));
-        sender.sendMessage(ChatColor.DARK_AQUA + "Deaths: "+ gamePlayer.getStat(Stats.Deaths));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&m--------------------&r&6 [Skywars] &a&m--------------------"));
+        sender.sendMessage(ChatColor.GOLD + "Score: " + ChatColor.AQUA + gamePlayer.getStat(Stats.Score));
+        sender.sendMessage(ChatColor.GOLD + "Games: " + ChatColor.AQUA + gamePlayer.getStat(Stats.Matches));
+        sender.sendMessage(ChatColor.GOLD + "Wins: " + ChatColor.AQUA+ gamePlayer.getStat(Stats.Wins));
+        sender.sendMessage(ChatColor.GOLD + "Kills: " + ChatColor.AQUA+ gamePlayer.getStat(Stats.Kills));
+        sender.sendMessage(ChatColor.GOLD + "Deaths: " + ChatColor.AQUA+ gamePlayer.getStat(Stats.Deaths));
+        sender.sendMessage(ChatColor.GOLD + "Last Played: " + ChatColor.AQUA + gamePlayer.getStat(Stats.LastGame));
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"&a&m--------------------------------------------------"));
     }
 
     @Override

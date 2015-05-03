@@ -7,7 +7,6 @@ import com.sk89q.worldedit.schematic.SchematicFormat;
 import net.thelightmc.util.WeightedList;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
@@ -18,14 +17,12 @@ import java.util.ArrayList;
 public class Map {
     private final ArrayList<Spawn> spawns = new ArrayList<>();
     private final WeightedList<ItemStack> itemStacks;
-    private final Location origin;
     private final Location middle;
     private int minimumPlayers;
     private int maximumPlayers;
     private String name;
 
     protected Map(MapCreator creator,Location origin, String name,WeightedList<ItemStack> list) {
-        this.origin = origin;
         this.middle = origin;
         this.name = name;
         maximumPlayers = 2;
@@ -51,14 +48,6 @@ public class Map {
         minimumPlayers = 4;
     }
 
-    public Vector getOrigin() {
-        Vector vector = new Vector();
-        vector.setX(origin.getX());
-        vector.setY(origin.getY());
-        vector.setZ(origin.getZ());
-        return vector;
-    }
-
     public Location getMiddle() {
         return middle;
     }
@@ -80,10 +69,6 @@ public class Map {
             for (ItemStack itemStack : itemStacks.values(10)) {
                 chest.getBlockInventory().addItem(itemStack);
             }
-    }
-
-    public WeightedList<ItemStack> getItemStacks() {
-        return itemStacks;
     }
 
     public void setName(String name) {
@@ -139,9 +124,5 @@ public class Map {
             e.printStackTrace();
             return 0;
         }
-    }
-
-    private World getWorld() {
-        return origin.getWorld();
     }
 }

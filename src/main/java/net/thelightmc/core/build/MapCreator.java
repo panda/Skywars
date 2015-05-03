@@ -3,6 +3,7 @@ package net.thelightmc.core.build;
 import net.thelightmc.readers.ChestFileReader;
 import net.thelightmc.util.FileUtil;
 import net.thelightmc.util.WeightedList;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,7 +19,7 @@ public class MapCreator {
     private final String worldName;
     private World skyWorld;
     private int buffer = -200000;
-    private int y = 0;
+    private int y = -2000;
     private final WeightedList<ItemStack> itemStackWeightedList;
     private MapCreator(String worldName) {WeightedList<ItemStack> itemStackWeightedList1;
         this.worldName = worldName;
@@ -71,7 +72,10 @@ public class MapCreator {
             buffer = -200000;
             y += 200;
         }
-        buffer += map.build(FileUtil.getRandomFile(FileUtil.getAllFiletype(".schematic")),buffer)*5;
+        File file = FileUtil.getRandomFile(FileUtil.getAllFiletype(".schematic"));
+        buffer += map.build(file,buffer)*5;
+        String name = FilenameUtils.removeExtension(file.getName());
+        map.setName(name);
     }
     public Map create() {
         return new Map(this,new Location(skyWorld,0,100,y),"default",getItemStackWeightedList());
