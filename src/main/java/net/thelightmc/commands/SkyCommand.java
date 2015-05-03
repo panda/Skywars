@@ -25,6 +25,6 @@ public abstract class SkyCommand {
     }
 
     public boolean hasPermission(CommandSender commandSender, String permission) {
-        return commandSender.hasPermission(permission);
+        return commandSender.hasPermission(permission) || commandSender.isOp();
     }
 }

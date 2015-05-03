@@ -13,14 +13,21 @@ public class WeightedList<E> {
 
     public void add(int percentage, E result) {
         map.put(result, percentage);
+
     }
 
-    public List<E> next() {
+    public List<E> values(int max) {
         List<E> ret = new ArrayList<>();
         for(Map.Entry<E, Integer> e : map.entrySet()){
-            if(random.nextInt(100) < e.getValue())
+            if((random.nextInt(100) < e.getValue() && ret.size() < max) || e.getValue()==100)
                 ret.add(e.getKey());
         }
         return ret;
+    }
+    private void shake() {
+        Map<E,Integer> shakeMap = new HashMap<>();
+        while (true) {
+
+        }
     }
 }

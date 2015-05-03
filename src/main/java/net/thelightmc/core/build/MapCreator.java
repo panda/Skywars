@@ -1,8 +1,6 @@
 package net.thelightmc.core.build;
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import net.thelightmc.readers.ChestFileReader;
 import net.thelightmc.util.FileUtil;
 import net.thelightmc.util.WeightedList;
 import org.bukkit.Bukkit;
@@ -19,10 +17,20 @@ public class MapCreator {
     private static MapCreator instance;
     private final String worldName;
     private World skyWorld;
-    private MapCreator(String worldName) {
+    private int buffer = -200000;
+    private int y = 0;
+    private final WeightedList<ItemStack> itemStackWeightedList;
+    private MapCreator(String worldName) {WeightedList<ItemStack> itemStackWeightedList1;
         this.worldName = worldName;
-        plugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         createWorld();
+        try {
+            ChestFileReader reader = new ChestFileReader(FileUtil.getFile("materials.yml"));
+            itemStackWeightedList1 = reader.getList();
+        } catch (IOException e) {
+            itemStackWeightedList1 = new WeightedList<>(ThreadLocalRandom.current());
+            e.getSuppressed();
+        }
+        itemStackWeightedList = itemStackWeightedList1;
     }
     public static MapCreator get() {
         if (instance == null) {
@@ -30,7 +38,7 @@ public class MapCreator {
         }
         return instance;
     }
-    private final WorldEditPlugin plugin;
+
     private void createWorld() {
         skyWorld = Bukkit.createWorld(new WorldCreator(worldName).environment(World.Environment.THE_END));
     }
@@ -42,7 +50,12 @@ public class MapCreator {
                     if (file.isDirectory()) {
                         deleteFile(file);
                     } else {
-                        file.delete();
+                        final boolean delete = file.delete();
+                        if (!delete) {
+                            Bukkit.getLogger().severe(
+                                    "Error deleting world file."
+                            );
+                        }
                     }
                 }
             }
@@ -54,15 +67,17 @@ public class MapCreator {
         deleteFile(path);
     }
     public void build(Map map) {
-        EditSession session = plugin.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(skyWorld), 1000000);
-        try {
-            map.build(session, FileUtil.getFile("default.schematic",false));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (buffer > 2000000) {
+            buffer = -200000;
+            y += 200;
         }
-
+        buffer += map.build(FileUtil.getRandomFile(FileUtil.getAllFiletype(".schematic")),buffer)*5;
     }
     public Map create() {
-        return new Map(this,new Location(skyWorld,0,10,0),"default",new WeightedList<ItemStack>(ThreadLocalRandom.current()));
+        return new Map(this,new Location(skyWorld,0,100,y),"default",getItemStackWeightedList());
+    }
+
+    public WeightedList<ItemStack> getItemStackWeightedList() {
+        return itemStackWeightedList;
     }
 }

@@ -5,10 +5,9 @@ import net.thelightmc.core.build.Map;
 import net.thelightmc.core.game.GameState;
 import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.core.scoreboard.GameScoreboard;
+import net.thelightmc.core.scoreboard.ScoreboardUpdate;
 import net.thelightmc.events.DeathmatchStartEvent;
-import net.thelightmc.events.GameBroadcastEvent;
 //import net.thelightmc.events.GameJoinEvent;
-import net.thelightmc.events.GameStateChangeEvent;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -17,12 +16,13 @@ public class Game {
     public Game(Map map) {
         this.map = map;
         setGameState(GameState.Waiting);
+        scoreboard = new GameScoreboard(this);
     }
 
     private final ArrayList<GamePlayer> gamePlayers = new ArrayList<>();
     private final Map map;
     private GameState gameState;
-    private GameScoreboard scoreboard;
+    private final GameScoreboard scoreboard;
 
     public void broadcast(Language language) {
         broadcast(language.toString());
@@ -36,19 +36,29 @@ public class Game {
     public void startGame() {
         //ToDo remove boxes
         broadcast(Language.GameStart);
+        setGameState(GameState.InGame);
+        scoreboard.update(ScoreboardUpdate.StartGame);
     }
     public void endGame() {
         broadcast(Language.GameEnd);
     }
     private boolean checkEnd() {
-        return gamePlayers.isEmpty() || gamePlayers.size() <2;
+        return gamePlayers.isEmpty() || gamePlayers.size() == 1;
     }
-    public boolean checkStart() {
-        return map.getMinimumPlayers() <= getPlayerSize() && map.getMaximumPlayers() == getPlayerSize();
+    public boolean checkStart(boolean startIfReady) {
+        if (map.getMinimumPlayers() <= getPlayerSize() && map.getMaximumPlayers() == getPlayerSize() && startIfReady) {
+            startGame();
+            return true;
+        }
+        return false;
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
         gamePlayers.remove(gamePlayer);
+        broadcast(Language.PlayerQuit.getMsg().replace("{Player}",gamePlayer.getName()).replace("{Remaining}",getRemaining()));
+        if (checkEnd()) {
+            endGame();
+        }
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
@@ -64,13 +74,17 @@ public class Game {
         spawn.setUsed(true);
         gamePlayer.getPlayer().teleport(spawn.getLocation());
         gamePlayer.setGame(this);
-        broadcast("joining");
-        //broadcast(Language.PlayerJoinedGame.toString().replace("{Player}",gamePlayer.getName()));
-        //checkStart();
+        broadcast(Language.PlayerJoinedGame.getMsg().replace("{Player}",gamePlayer.getName()).replace("{Remaining}",getRemaining()));
+        checkStart(true);
+        gamePlayer.getPlayer().setScoreboard(scoreboard.getScoreboard());
     }
 
     public Map getMap() {
         return map;
+    }
+
+    private String getRemaining() {
+        return getPlayerSize() + "/" + map.getMaximumPlayers();
     }
 
     public GameState getGameState() {
@@ -100,5 +114,8 @@ public class Game {
         for (GamePlayer gamePlayer : gamePlayers) {
             gamePlayer.getPlayer().teleport(getMap().getMiddle());
         }
+    }
+    public void updateScoreboard(ScoreboardUpdate scoreboardUpdate) {
+        scoreboard.update(scoreboardUpdate);
     }
 }

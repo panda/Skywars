@@ -5,6 +5,7 @@ import net.thelightmc.core.build.MapCreator;
 import net.thelightmc.core.Game;
 import net.thelightmc.core.game.GameState;
 import net.thelightmc.core.player.GamePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -33,8 +34,11 @@ public class GameManager {
     }
 
     public Game getAvailable() {
-        if (game != null && (game.checkStart() || game.getGameState() == GameState.InGame)) {
+        if (game != null && (game.getGameState() == GameState.InGame)) {
             game = null;
+        } else {
+            if (game != null)
+                Bukkit.getLogger().info(game.getGameState().toString());
         }
         if (game == null) {
             createGame();
