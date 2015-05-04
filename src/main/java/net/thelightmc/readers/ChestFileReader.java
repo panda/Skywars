@@ -1,20 +1,23 @@
 package net.thelightmc.readers;
 
+import net.thelightmc.util.FileUtil;
 import net.thelightmc.util.WeightedList;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ChestFileReader {
+public class ChestFileReader implements FileReader<WeightedList> {
     private final FileConfiguration file;
 
     public ChestFileReader(FileConfiguration file) {
         this.file = file;
     }
-    public WeightedList<ItemStack> getList() {
+    public WeightedList<ItemStack> read() {
         WeightedList<ItemStack> list = new WeightedList<>(ThreadLocalRandom.current());
         for (String s : file.getStringList("items")) {
             String[] split = s.split(" ");
@@ -42,5 +45,10 @@ public class ChestFileReader {
             list.add(weight,itemStack);
         }
         return list;
+    }
+
+    @Override
+    public File getFile() throws IOException {
+        return FileUtil.getFile(file.getName(),true);
     }
 }

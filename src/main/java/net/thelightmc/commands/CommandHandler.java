@@ -34,6 +34,7 @@ public class CommandHandler implements CommandExecutor {
                     return true;
                 }
             }
+
         }
         return false;
     }

@@ -27,6 +27,7 @@ public class GameScoreboard {
                     integer = taken++;
                 }
                 getSideBar().getScore(update.getValue()).setScore(integer);
+                update(ScoreboardUpdate.Refresh);
                 break;
             case RemovePlayer:
                 Score score = getSideBar().getScore(update.getValue());
@@ -39,7 +40,11 @@ public class GameScoreboard {
                     update(sUpdate);
                 }
                 break;
+            case Refresh:
             case Countdown:
+                for (GamePlayer gamePlayer : getGame().getPlayers()) {
+                    gamePlayer.getPlayer().setScoreboard(getScoreboard());
+                }
                 break;
             default:
                 break;

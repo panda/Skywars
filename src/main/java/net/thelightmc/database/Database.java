@@ -3,28 +3,15 @@ package net.thelightmc.database;
 import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.util.FileUtil;
 
-public abstract class Database {
-    private final DataType dataType;
-    private final String flatDirectory;
+public interface Database {
 
-    protected Database(DataType dataType) {
-        this.dataType = dataType;
-        this.flatDirectory = FileUtil.getDirectory();
-    }
+    boolean loadPlayer(GamePlayer gamePlayer);
 
-    protected String getFlatDirectory() {
-        return flatDirectory;
-    }
+    boolean savePlayer(GamePlayer gamePlayer);
 
-    public DataType getDataType() {
-        return dataType;
-    }
+    DataType getDatatype();
 
-    public abstract boolean loadPlayer(GamePlayer gamePlayer);
-
-    public abstract boolean savePlayer(GamePlayer gamePlayer);
-
-    public enum DataType {
+    enum DataType {
         MySQL,Redis,MongoDB,JSON;
     }
 }

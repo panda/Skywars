@@ -28,7 +28,7 @@ public class GameManager {
         }
         return null;
     }
-    public Game getGame(Player player) {
+    public Object getGame(Player player) {
         GamePlayer gamePlayer = PlayerManager.getPlayer(player);
         return getGame(gamePlayer);
     }

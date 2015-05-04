@@ -2,7 +2,7 @@ package net.thelightmc.core.scoreboard;
 
 public enum ScoreboardUpdate {
     //Testing this out 50% chance I'll change this later
-    AddPlayer,RemovePlayer,StartGame,Countdown;
+    AddPlayer,RemovePlayer,StartGame,Countdown,Refresh;
     private String value;
 
     private Integer score;

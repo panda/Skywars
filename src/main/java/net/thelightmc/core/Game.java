@@ -37,7 +37,9 @@ public class Game {
         }
     }
     public void startGame() {
-        //ToDo remove boxes
+        for (Map.Spawn spawn : getMap().getSpawns()) {
+            spawn.removeBox();
+        }
         setFallDamage(false);
         broadcast(Language.GameStart);
         setGameState(GameState.InGame);
@@ -53,14 +55,13 @@ public class Game {
         broadcast(Language.GameEnd);
     }
     private boolean checkEnd() {
-        return gamePlayers.isEmpty() || gamePlayers.size() == 1;
+        return (gameState == GameState.InGame || gameState == GameState.DeathMatch) && (gamePlayers.isEmpty() || gamePlayers.size() == 1);
     }
     public boolean checkStart(boolean startIfReady) {
-        if (map.getMinimumPlayers() <= getPlayerSize() && map.getMaximumPlayers() == getPlayerSize() && startIfReady) {
+        if (map.getMinimumPlayers() < getPlayerSize() && startIfReady) {
             startGame();
-            return true;
         }
-        return false;
+        return map.getMinimumPlayers() < getPlayerSize();
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
@@ -84,9 +85,12 @@ public class Game {
         spawn.setUsed(true);
         gamePlayer.getPlayer().teleport(spawn.getLocation());
         gamePlayer.setGame(this);
-        broadcast(Language.PlayerJoinedGame.getMsg().replace("{Player}",gamePlayer.getName()).replace("{Remaining}",getRemaining()));
+        broadcast(Language.PlayerJoinedGame.getMsg().replace("{Player}", gamePlayer.getName()).replace("{Remaining}", getRemaining()));
         checkStart(true);
-        gamePlayer.getPlayer().setScoreboard(scoreboard.getScoreboard());
+        ScoreboardUpdate scoreboardUpdate = ScoreboardUpdate.AddPlayer;
+        scoreboardUpdate.setValue(gamePlayer.getName());
+        updateScoreboard(scoreboardUpdate);
+        
     }
 
     public Map getMap() {

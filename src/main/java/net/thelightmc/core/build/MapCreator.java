@@ -1,6 +1,7 @@
 package net.thelightmc.core.build;
 
 import net.thelightmc.readers.ChestFileReader;
+import net.thelightmc.readers.FileReader;
 import net.thelightmc.util.FileUtil;
 import net.thelightmc.util.WeightedList;
 import org.apache.commons.io.FilenameUtils;
@@ -21,12 +22,13 @@ public class MapCreator {
     private int buffer = -200000;
     private int y = -2000;
     private final WeightedList<ItemStack> itemStackWeightedList;
+    @SuppressWarnings(value = "unchecked")
     private MapCreator(String worldName) {WeightedList<ItemStack> itemStackWeightedList1;
         this.worldName = worldName;
         createWorld();
         try {
-            ChestFileReader reader = new ChestFileReader(FileUtil.getFile("materials.yml"));
-            itemStackWeightedList1 = reader.getList();
+            FileReader<WeightedList> reader = new ChestFileReader(FileUtil.getFile("materials.yml"));
+            itemStackWeightedList1 = reader.read();
         } catch (IOException e) {
             itemStackWeightedList1 = new WeightedList<>(ThreadLocalRandom.current());
             e.getSuppressed();
@@ -74,7 +76,7 @@ public class MapCreator {
         }
         File file = FileUtil.getRandomFile(FileUtil.getAllFiletype(".schematic"));
         buffer += map.build(file,buffer)*5;
-        String name = FilenameUtils.removeExtension(file.getName());
+        String name = file.getName();
         map.setName(name);
     }
     public Map create() {
