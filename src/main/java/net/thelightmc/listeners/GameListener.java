@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -72,10 +71,14 @@ public class GameListener implements Listener {
     }
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        if (event.getPlayer().isOp()) {
+            return;
+        }
         GamePlayer gamePlayer = PlayerManager.getPlayer(event.getPlayer());
         if (gamePlayer.getGame() == null) {
             return;
         }
+
         if (!allowedCommands.contains(event.getMessage().split(" ")[0])) {
             event.getPlayer().sendMessage(Language.CommandsInArena.getMsg());
             event.setCancelled(true);

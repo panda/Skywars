@@ -9,7 +9,7 @@ public enum Language {
     PlayerNowSpectating("PlayerSpectatingYou","&eThe player {Player} has started to spectate you."),
     SpectateModeEnabled("SpectateEnabled","&eYou have enabled spectate mode."),
     CommandsInArena("CommandsInArena","&cAll commands have been disabled while in the arena."),
-    DeathmatchCountdown("DeathmatchCountdown","&5Deathmatch commencing in &6%s"),
+    DeathmatchCountdown("DeathmatchCountdown","&5Deathmatch commencing in &6{Time}"),
     DeathmatchStarting("DeathmatchStarting","&6The deathmatch is now starting."),
     GameStart("GameStart","&9The game has started. Gain control over the others islands!"),
     PlayerDied("PlayerDied","&6{Player} &9has been removed from the game,"),

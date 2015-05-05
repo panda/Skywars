@@ -1,7 +1,9 @@
 package net.thelightmc.events;
 
+import net.thelightmc.core.Game;
+
 public class DeathmatchStartEvent extends SkywarsEvent {
-    public DeathmatchStartEvent(Object game) {
+    public DeathmatchStartEvent(Game game) {
         super(game);
     }
 }

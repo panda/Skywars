@@ -1,12 +1,13 @@
 package net.thelightmc.events;
 
+import net.thelightmc.core.Game;
 import net.thelightmc.core.game.GameState;
 
 public class GameStateChangeEvent extends SkywarsEvent {
     private final GameState from;
     private GameState to;
 
-    public GameStateChangeEvent(GameState from,GameState to,Object game) {
+    public GameStateChangeEvent(GameState from,GameState to,Game game) {
         super(game);
         this.from = from;
         this.to = to;

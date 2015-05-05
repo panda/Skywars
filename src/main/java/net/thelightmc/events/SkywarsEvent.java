@@ -1,14 +1,15 @@
 package net.thelightmc.events;
 
+import net.thelightmc.core.Game;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public abstract class SkywarsEvent extends Event implements Cancellable {
     private boolean cancelled;
-    private final Object game;
+    private final Game game;
     private static final HandlerList handlers = new HandlerList();
-    public SkywarsEvent(Object game) {
+    public SkywarsEvent(Game game) {
         this.game = game;
     }
     @Override
@@ -19,7 +20,7 @@ public abstract class SkywarsEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public Object getGame() {
+    public Game getGame() {
         return game;
     }
 

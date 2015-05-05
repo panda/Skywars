@@ -1,5 +1,6 @@
 package net.thelightmc.events;
 
+import net.thelightmc.core.Game;
 import net.thelightmc.core.player.GamePlayer;
 import org.bukkit.event.HandlerList;
 
@@ -7,7 +8,7 @@ public abstract class SkywarsPlayerEvent extends SkywarsEvent {
 
     private final GamePlayer player;
 
-    public SkywarsPlayerEvent(Object game,GamePlayer who) {
+    public SkywarsPlayerEvent(Game game,GamePlayer who) {
         super(game);
         this.player = who;
     }

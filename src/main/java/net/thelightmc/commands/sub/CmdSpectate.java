@@ -7,6 +7,7 @@ import net.thelightmc.manager.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,6 +31,14 @@ public class CmdSpectate extends SkyCommand {
             Player p = (Player) sender;
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(target.getLocation());
+        } else {
+            Player player = (Player) sender;
+            /*
+            if (player.getGameMode() == GameMode.SPECTATOR) {
+                player.teleport(new Location(null,10,10,10)) // Won't work yet Need to get a way to get locs from file
+            }
+            */
+            player.setGameMode(GameMode.SURVIVAL);
         }
     }
 

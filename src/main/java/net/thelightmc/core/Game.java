@@ -3,6 +3,7 @@ package net.thelightmc.core;
 import net.thelightmc.Language;
 import net.thelightmc.Skywars;
 import net.thelightmc.core.build.Map;
+import net.thelightmc.core.game.Deathmatch;
 import net.thelightmc.core.game.GameState;
 import net.thelightmc.core.player.GamePlayer;
 import net.thelightmc.core.scoreboard.GameScoreboard;
@@ -14,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Deathmatch {
     public Game(Map map) {
         this.map = map;
         setGameState(GameState.Waiting);
@@ -26,6 +27,7 @@ public class Game {
     private GameState gameState;
     private final GameScoreboard scoreboard;
     private boolean fallDamage = true;
+    private boolean deathMatchStarted = false;
 
     public void broadcast(Language language) {
         broadcast(language.toString());
@@ -49,7 +51,7 @@ public class Game {
             public void run() {
                 setFallDamage(true);
             }
-        },60);
+        }, 60);
     }
     public void endGame() {
         broadcast(Language.GameEnd);
@@ -120,15 +122,6 @@ public class Game {
         return gamePlayers;
     }
 
-    public void startDeathmatch() {
-        DeathmatchStartEvent event = new DeathmatchStartEvent(this);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) return;
-        setGameState(GameState.Ending);
-        for (GamePlayer gamePlayer : gamePlayers) {
-            gamePlayer.getPlayer().teleport(getMap().getMiddle());
-        }
-    }
     public void updateScoreboard(ScoreboardUpdate scoreboardUpdate) {
         scoreboard.update(scoreboardUpdate);
     }
@@ -139,5 +132,30 @@ public class Game {
 
     public void setFallDamage(boolean fallDamage) {
         this.fallDamage = fallDamage;
+    }
+
+    @Override
+    public void startDeathmatch() {
+        DeathmatchStartEvent event = new DeathmatchStartEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+        setGameState(GameState.Ending);
+        for (GamePlayer gamePlayer : gamePlayers) {
+            //This is temporarily here till I get a block to use for middle
+            gamePlayer.getPlayer().teleport(getMap().getSpawns().get(0).getLocation());
+        }
+    }
+
+    @Override
+    public void deathMatchTick() {}
+
+    @Override
+    public boolean isDeathmatchStarted() {
+        return deathMatchStarted;
+    }
+
+    @Override
+    public void announceTimer(int ctr) {
+        broadcast(Language.DeathmatchCountdown.getMsg().replace("{Time}",String.valueOf(ctr)));
     }
 }
